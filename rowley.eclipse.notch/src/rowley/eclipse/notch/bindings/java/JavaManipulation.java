@@ -1,45 +1,13 @@
-notch
-=====
+package rowley.eclipse.notch.bindings.java;
 
-An eclipse plugin that allows for advanced commands and templates using groovy scripts.
+import org.eclipse.jdt.core.IField;
+import org.eclipse.jdt.core.IImportDeclaration;
+import org.eclipse.jdt.core.IMember;
+import org.eclipse.jdt.core.IMethod;
 
-All commands/templates can be registered to hotkeys allowing for faster access then normal eclipse templates (done via code completion)
+import groovy.lang.Closure;
 
-see notch-scripts for some examples
-
-Java Examples
-~~~~~~~~~~~~~
-
-The following example shows how to add a private field and after generation automatically add (at the end of the class) the new get and set methods
-Note that the variables 'Type' and 'var' are available as standard variables in the closure allowing for programmatic manipulation of the values
-
-```
-    java.template("private \${Type} \${var};", {
-	java.addMethod("public void set" + var.substring(0,1).toUpperCase() + var.substring(1) + "(" + Type + " " + var +") { this." + var + "=" + var + "; }")
-	java.addMethod("public " + Type + " get" + var.substring(0,1).toUpperCase() + var.substring(1) + "() { return this." + var + ";}")
-    });
-
-```
-
-The following example shows how to automatically add the private logger field (if it doesn't exist). And then invoke the logger method. In standard eclipse you would 
-need to template the field and method call seperately. If the field already exists it won't be re-added
-
-```
-    java.addImport("org.slf4j.Logger");
-    java.addImport("org.slf4j.LoggerFactory");
-    java.addFieldFirst("private static final Logger LOGGER = LoggerFactory.getLogger(" + java.className +");");
-    java.template("LOGGER.info(\"\${msg}\");\${cursor}");
-```
-
-Java API
-~~~~~~~~
-
-The 'java' binding is provided for easier java manipulation. If you need something not supported feel free to add or request it. You can also access the current eclipse editor
-directly via the 'editor' binding to do whatever you want (which is what JavaManipulation uses anyway)
-
-
-```
-    public interface JavaManipulation {
+public interface JavaManipulation {
 
 	/**
 	 * Adds an import to a java class
@@ -67,16 +35,16 @@ directly via the 'editor' binding to do whatever you want (which is what JavaMan
 	 */
 	public IMethod addMethod(String contents);
 	
-	
-	
+
 	/**
 	 * Adds a method to a java class. The method is automatically added
-	 * at the top of the class
+	 * at the bottom of the class
 	 * 
 	 * @param constructor the full java code that defines the method
 	 * @return the eclipse method that was created
 	 */
 	public IField addFieldFirst(String contents);
+	
 	
 	
 	/**
@@ -88,7 +56,6 @@ directly via the 'editor' binding to do whatever you want (which is what JavaMan
 	 */
 	public IField addFieldLast(String contents);
 	
-		
 	/**
 	 * Creates a template and runs the closure at completion.
 	 * 
@@ -96,7 +63,7 @@ directly via the 'editor' binding to do whatever you want (which is what JavaMan
 	 * @param closure the closure to run after the template is finished
 	 */
 	public void template(String template, Closure closure);
-	
+
 	
 	/**
 	 * Shifts focus to a given java member
@@ -115,5 +82,4 @@ directly via the 'editor' binding to do whatever you want (which is what JavaMan
 	 * @param type the member to focus after
 	 */
 	public void focusAfter(IMember type);
-    }
-```
+}

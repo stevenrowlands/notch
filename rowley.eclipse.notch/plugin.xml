@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension point="org.eclipse.ui.startup">
+     <startup class="rowley.eclipse.notch.NotchStartup"/>
+   </extension>
+   
+   <extension point="org.eclipse.ui.preferencePages">
+      <page name="Notch" class="rowley.eclipse.notch.pref.PreferencePage" id="rowley.eclipse.notch.pref.preference.page">
+      </page>
+   </extension>
+   
+   <extension point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="rowley.eclipse.notch.pref.PreferenceInitializer">
+      </initializer>
+   </extension>
+   
+   
+   <extension point="org.eclipse.ui.commands">
+      <category name="Notch" id="rowley.eclipse.notchstatic.commands">
+      </category>
+      <command name="Reload Scripts" 
+      	categoryId="rowley.eclipse.notchstatic.commands" 
+      	id="rowley.eclipse.notchstatic.commands.reload">
+      </command>
+   </extension>
+   
+   <extension point="org.eclipse.ui.handlers">
+      <handler commandId="rowley.eclipse.notchstatic.commands.reload" class="rowley.eclipse.notch.ReloadCommandHandler">
+      </handler>
+   </extension>
+
+   <extension point="org.eclipse.ui.menus">
+      <menuContribution locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar id="rowley.eclipse.notch.toolbar">
+            <command commandId="rowley.eclipse.notchstatic.commands.reload"
+                  icon="icons/notchicon.png"
+                  tooltip="Rescan notch directory for scripts"
+                  id="rowley.eclipse.notch.toolbar.reload">
+            </command>
+         </toolbar>
+      </menuContribution>
+   </extension>
+</plugin>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/rowley.eclipse.notch.feature_1.0.0.0.jar" id="rowley.eclipse.notch.feature" version="1.0.0.0">
+      <category name="Notch"/>
+   </feature>
+   <category-def name="Notch" label="Notch"/>
+</site>

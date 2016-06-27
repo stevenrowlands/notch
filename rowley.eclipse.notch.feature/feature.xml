@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="rowley.eclipse.notch.feature"
+      label="Notch"
+      version="1.0.0.0">
+
+   <description url="https://github.com/stevenrowlands/notch">
+      Notch allows you to extend Eclipse with groovy scripts
+   </description>
+
+   <license url="http://www.apache.org/licenses/LICENSE-2.0">
+      %license
+   </license>
+
+   <url>
+      <discovery label="Groovy" url="http://dist.springsource.org/snapshot/GRECLIPSE/e4.6/"/>
+   </url>
+
+   <requires>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.jdt.core"/>
+      <import plugin="org.eclipse.jdt.ui"/>
+      <import plugin="org.eclipse.jface.text"/>
+      <import plugin="org.eclipse.ui.editors"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.ui.console"/>
+      <import feature="org.codehaus.groovy24.feature" version="2.9.2.xx-201508121448-e45"/>
+   </requires>
+
+   <plugin
+         id="rowley.eclipse.notch"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.0"
+         unpack="false"/>
+
+</feature>
