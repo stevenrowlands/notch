@@ -12,11 +12,15 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
-import rowley.eclipse.notch.Console;
-import rowley.eclipse.notch.bindings.EditorBinding;
+import org.eclipse.ui.texteditor.ITextEditor;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
+import rowley.eclipse.notch.Console;
+import rowley.eclipse.notch.bindings.EditorBinding;
+import rowley.eclipse.notch.bindings.java.JavaManipulationImpl;
+import rowley.eclipse.notch.bindings.java.JavaProjectManipulation;
+import rowley.eclipse.notch.bindings.text.TextManipulation;
 
 /**
  * This class handles all commands that have groovy scripts associated with them
@@ -24,13 +28,11 @@ import groovy.lang.GroovyShell;
 public class GroovyCommandHandler implements IHandler {
 
 	private ScriptSourceProvider source;
-	private List<EditorBinding> bindings;
 	private Console console;
 
-	public GroovyCommandHandler(ScriptSourceProvider source, Console console, List<EditorBinding> bindings) {
+	public GroovyCommandHandler(ScriptSourceProvider source, Console console) {
 		this.source = source;
 		this.console = console;
-		this.bindings = bindings;
 	}
 
 	@Override
@@ -47,12 +49,12 @@ public class GroovyCommandHandler implements IHandler {
 		editor.setFocus();
 
 		binding.setProperty("editor", editor);
-		for (EditorBinding editorBinding : bindings) {
-			if (editorBinding.handles(editor)) {
-				editorBinding.addBindings(editor, binding);
-			}
-		}
 
+		binding.setProperty("java", new JavaManipulationImpl());
+		binding.setProperty("javaproject", new JavaProjectManipulation());
+		if (editor instanceof ITextEditor) {
+			binding.setProperty("text", new TextManipulation((ITextEditor) editor));
+		}
 		try {
 			String name = CommandIdToNameMapper.commandIdToName(event.getCommand().getId());
 			shell.evaluate(source.getFile(name));

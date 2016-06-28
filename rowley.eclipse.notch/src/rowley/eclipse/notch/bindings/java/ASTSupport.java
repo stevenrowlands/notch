@@ -34,6 +34,14 @@ public class ASTSupport {
 		
 		return m;
 	}
+	
+	public ASTNode parseNode(String contents) {
+		ASTParser ppp = ASTParser.newParser(AST.JLS8);
+		ppp.setSource(contents.toCharArray());
+		ppp.setKind(ASTParser.K_EXPRESSION);
+		ASTNode node = ppp.createAST(null);
+		return node;
+	}
 
 
 

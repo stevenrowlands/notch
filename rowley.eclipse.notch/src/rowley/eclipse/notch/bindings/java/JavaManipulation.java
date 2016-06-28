@@ -2,6 +2,7 @@ package rowley.eclipse.notch.bindings.java;
 
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IImportDeclaration;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.IMethod;
 
@@ -82,4 +83,9 @@ public interface JavaManipulation {
 	 * @param type the member to focus after
 	 */
 	public void focusAfter(IMember type);
+	
+	/**
+	 * @return the java project for the current editor
+	 */
+	public IJavaProject getProject();
 }

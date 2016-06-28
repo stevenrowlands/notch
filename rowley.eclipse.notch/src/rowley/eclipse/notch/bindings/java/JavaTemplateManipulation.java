@@ -241,7 +241,6 @@ public class JavaTemplateManipulation implements ILinkedModeListener {
 				LinkedModeUI ui = new LinkedModeUI(model, editor.getViewer());
 				ui.setExitPosition(editor.getViewer(), getCaretOffset(templateBuffer) + start, 0, 2147483647);
 				ui.enter();
-
 			}
 
 		} catch (Exception e) {
@@ -293,9 +292,11 @@ public class JavaTemplateManipulation implements ILinkedModeListener {
 	@Override
 	public void left(LinkedModeModel arg0, int arg1) {
 		try {
+			if (arg1 == ILinkedModeListener.EXTERNAL_MODIFICATION || arg1 == ILinkedModeListener.EXIT_ALL) {
+				return;
+			}
 			if (closure == null)
 				return;
-//			editor.doSave(null);
 			IDocument document = editor.getDocumentProvider().getDocument(editor.getEditorInput());
 			Map<String, String> vars = new HashMap<String, String>();
 			for (int i = 0; i < groups.size(); i++) {

@@ -12,7 +12,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.editors,
  org.eclipse.core.resources,
  org.eclipse.ui.console,
- org.codehaus.groovy;bundle-version="2.4.3"
+ org.codehaus.groovy;bundle-version="2.4.3",
+ org.eclipse.ui.ide,
+ org.eclipse.core.filesystem
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Export-Package: rowley.eclipse.notch

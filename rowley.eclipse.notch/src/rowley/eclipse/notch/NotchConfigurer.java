@@ -5,16 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.commands.Command;
-import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.console.MessageConsole;
+import org.eclipse.ui.handlers.IHandlerActivation;
 import org.eclipse.ui.handlers.IHandlerService;
 
-import rowley.eclipse.notch.bindings.EditorBinding;
-import rowley.eclipse.notch.bindings.JavaEditorBinding;
-import rowley.eclipse.notch.bindings.TextEditorBinding;
 import rowley.eclipse.notch.command.Commander;
 import rowley.eclipse.notch.command.GroovyCommandHandler;
 import rowley.eclipse.notch.pref.PreferenceConstants;
@@ -30,27 +27,23 @@ import rowley.eclipse.notch.pref.PreferenceConstants;
  */
 public class NotchConfigurer {
 
-	private static List<IHandler> handlers = new ArrayList<IHandler>();
-	
+	private static List<IHandlerActivation> handlers = new ArrayList<IHandlerActivation>();
+
 	public static void reconfigure() {
 		ICommandService commandService = PlatformUI.getWorkbench().getService(ICommandService.class);
 		IHandlerService handlerService = PlatformUI.getWorkbench().getService(IHandlerService.class);
 		MessageConsole message = ConsoleProvider.getConsole();
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 		String scriptPathPreference = store.getString(PreferenceConstants.P_PATH);
-		
+
 		NotchConfiguration configuration = new NotchConfiguration(scriptPathPreference);
 		Commander commandCreator = new Commander(commandService);
 		commandCreator.undefine();
 
 		EclipseConsole console = new EclipseConsole(message);
 
-		List<EditorBinding> bindings = new ArrayList<EditorBinding>();
-		bindings.add(new JavaEditorBinding());
-		bindings.add(new TextEditorBinding());
-
 		console.write("scanning " + configuration.getScripts().getAbsolutePath());
-		File [] files = configuration.getScripts().listFiles();
+		File[] files = configuration.getScripts().listFiles();
 		if (files.length == 0) {
 			console.write("no scripts found");
 		}
@@ -59,15 +52,12 @@ public class NotchConfigurer {
 		for (File script : files) {
 			if (!script.getAbsolutePath().toLowerCase().endsWith(".groovy"))
 				continue;
-			
+
 			console.write("  " + script.getAbsolutePath());
 			String simpleName = script.getName();
 			Command command = commandCreator.createCommand(simpleName);
-			GroovyCommandHandler handler =  new GroovyCommandHandler(configuration, console, bindings);
-			handlers.add(handler);
-			handlerService.activateHandler(command.getId(),handler);
+			GroovyCommandHandler handler = new GroovyCommandHandler(configuration, console);
+			handlers.add(handlerService.activateHandler(command.getId(), handler));
 		}
-
 	}
-
 }

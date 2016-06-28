@@ -25,7 +25,7 @@
       <import plugin="org.eclipse.ui.editors"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="org.eclipse.ui.console"/>
-      <import feature="org.codehaus.groovy24.feature" version="2.9.2.xx-201508121448-e45"/>
+      <import feature="org.codehaus.groovy24.feature" version="2.9.2" match="greaterOrEqual"/>
    </requires>
 
    <plugin
