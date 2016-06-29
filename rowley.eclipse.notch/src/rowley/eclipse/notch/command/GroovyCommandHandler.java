@@ -20,7 +20,7 @@ import rowley.eclipse.notch.Console;
 import rowley.eclipse.notch.bindings.EditorBinding;
 import rowley.eclipse.notch.bindings.java.JavaManipulationImpl;
 import rowley.eclipse.notch.bindings.java.JavaProjectManipulation;
-import rowley.eclipse.notch.bindings.text.TextManipulation;
+import rowley.eclipse.notch.bindings.text.TextManipulationImpl;
 
 /**
  * This class handles all commands that have groovy scripts associated with them
@@ -53,7 +53,7 @@ public class GroovyCommandHandler implements IHandler {
 		binding.setProperty("java", new JavaManipulationImpl());
 		binding.setProperty("javaproject", new JavaProjectManipulation());
 		if (editor instanceof ITextEditor) {
-			binding.setProperty("text", new TextManipulation((ITextEditor) editor));
+			binding.setProperty("text", new TextManipulationImpl((ITextEditor) editor));
 		}
 		try {
 			String name = CommandIdToNameMapper.commandIdToName(event.getCommand().getId());

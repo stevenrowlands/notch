@@ -70,69 +70,6 @@ public class JavaTemplateManipulation implements ILinkedModeListener {
 		}
 	}
 
-	public void eval() {
-		try {
-			begun = false;
-			IRewriteTarget target = (IRewriteTarget) editor.getAdapter(IRewriteTarget.class);
-			if (target != null) {
-				target.endCompoundChange();
-			}
-			boolean hasPositions = false;
-			IDocument document = editor.getDocumentProvider().getDocument(editor.getEditorInput());
-			LinkedModeModel model = new LinkedModeModel();
-			this.model = model;
-			this.model.addLinkingListener(this);
-			TemplateVariable[] variables = buffers.getVariables();
-			for (int i = 0; i != variables.length; ++i) {
-				TemplateVariable variable = variables[i];
-
-				if (variable.isUnambiguous()) {
-					continue;
-				}
-				LinkedPositionGroup group = new LinkedPositionGroup();
-				groups.add(group);
-				vars.add(variable.getName());
-				int[] offsets = variable.getOffsets();
-				int length = variable.getLength();
-
-				String[] values = variable.getValues();
-				ICompletionProposal[] proposals = new ICompletionProposal[values.length];
-				for (int j = 0; j < values.length; ++j) {
-					// ensurePositionCategoryInstalled(document, model);
-					Position pos = new Position(offsets[0], length);
-					// document.addPosition(getCategory(), pos);
-					proposals[j] = new PositionBasedCompletionProposal(values[j], pos, length);
-				}
-				LinkedPosition first;
-				if (proposals.length > 1)
-					first = new ProposalPosition(document, offsets[0], length, proposals);
-				else {
-					first = new LinkedPosition(document, offsets[0], length);
-				}
-
-				for (int j = 0; j != offsets.length; ++j) {
-					if (j == 0)
-						group.addPosition(first);
-					else
-						group.addPosition(new LinkedPosition(document, offsets[j], length));
-				}
-				model.addGroup(group);
-				hasPositions = true;
-			}
-
-			if (hasPositions) {
-				model.forceInstall();
-				LinkedModeUI ui = new LinkedModeUI(model, editor.getViewer());
-				ui.setExitPosition(editor.getViewer(), 0, 0, 2147483647);
-				ui.enter();
-
-			}
-
-		} catch (Exception e) {
-
-			throw new RuntimeException(e);
-		}
-	}
 
 	public int getPositionAtEndOfMethodsOrFields() {
 		try {
@@ -241,6 +178,8 @@ public class JavaTemplateManipulation implements ILinkedModeListener {
 				LinkedModeUI ui = new LinkedModeUI(model, editor.getViewer());
 				ui.setExitPosition(editor.getViewer(), getCaretOffset(templateBuffer) + start, 0, 2147483647);
 				ui.enter();
+			} else if (hasCaretOffset(templateBuffer)){
+				editor.selectAndReveal(getCaretOffset(templateBuffer) + start, 0);
 			}
 
 		} catch (Exception e) {
@@ -272,6 +211,17 @@ public class JavaTemplateManipulation implements ILinkedModeListener {
 			throw new RuntimeException(e);
 		}
 
+	}
+	
+	private boolean hasCaretOffset(TemplateBuffer buffer) {
+		TemplateVariable[] variables = buffer.getVariables();
+		for (int i = 0; i != variables.length; ++i) {
+			TemplateVariable variable = variables[i];
+			if (variable.getType().equals("cursor")) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private int getCaretOffset(TemplateBuffer buffer) {
