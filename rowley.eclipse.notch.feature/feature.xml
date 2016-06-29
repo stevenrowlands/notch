@@ -13,7 +13,7 @@
    </license>
 
    <url>
-      <discovery label="Groovy" url="http://dist.springsource.org/snapshot/GRECLIPSE/e4.6/"/>
+      <discovery label="Groovy" url="http://dist.springsource.org/snapshot/GRECLIPSE/e4.5/"/>
    </url>
 
    <requires>
