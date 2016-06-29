@@ -121,24 +121,24 @@ public class JavaManipulationImpl implements JavaManipulation {
 	}
 
 	@Override
-	public IImportDeclaration addImport(String imp) {
+	public void addImport(String imp) {
 		try {
-			return getUnit().createImport(imp, null, null);
+			getUnit().createImport(imp, null, null);
 		} catch (JavaModelException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
-	public IImportDeclaration addStaticImport(String imp) {
+	public void addStaticImport(String imp) {
 		try {
-			return getUnit().createImport(imp, null, Modifier.STATIC, null);
+			getUnit().createImport(imp, null, Modifier.STATIC, null);
 		} catch (JavaModelException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	@Override
-	public IMethod addConstructor(String contents) {
+	public void addConstructor(String contents) {
 		try {
 			ASTSupport astSupport = new ASTSupport();
 			CompilationUnit astRoot = astSupport.parse(getUnit());
@@ -169,27 +169,13 @@ public class JavaManipulationImpl implements JavaManipulation {
 			TextEdit edit = astRewrite.rewriteAST();
 			JavaModelUtil.applyEdit(getUnit(), edit, false, null);
 
-			int params = parsedNamed.parameters().size();
-
-			for (IMethod i : getPrimaryType().getMethods()) {
-				if (i.getElementName().equals(name) && i.getParameterNames().length == params) {
-					for (int j = 0; j < i.getParameterNames().length; j++) {
-						SingleVariableDeclaration dec = (SingleVariableDeclaration) parsedNamed.parameters().get(j);
-						SimpleType type = (SimpleType) dec.getType();
-						String fqn = type.getName().getFullyQualifiedName();
-						return i;
-					}
-				}
-			}
-
-			return null;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 	}
 
 	@Override
-	public IMethod addMethod(String contents) {
+	public void addMethod(String contents) {
 		try {
 			ASTSupport astSupport = new ASTSupport();
 			CompilationUnit astRoot = astSupport.parse(getUnit());
@@ -213,24 +199,10 @@ public class JavaManipulationImpl implements JavaManipulation {
 			listRewriter.insertLast(dd, null);
 			TextEdit edit = astRewrite.rewriteAST();
 			JavaModelUtil.applyEdit(getUnit(), edit, false, null);
-			return getMethod(name);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
 
-	}
-
-	private IMethod getMethod(String name) {
-		try {
-			for (IMethod method : getPrimaryType().getMethods()) {
-				if (method.getElementName().equals(name)) {
-					return method;
-				}
-			}
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-		return null;
 	}
 
 	private IField getField(String name) {
@@ -252,7 +224,7 @@ public class JavaManipulationImpl implements JavaManipulation {
 	 * @param declaration
 	 */
 	@Override
-	public IField addFieldFirst(String content) {
+	public void addFieldFirst(String content) {
 		try {
 			VariableDeclarationStatement var = processDeclaration(content);
 			VariableDeclarationFragment frag = getFragment(var);
@@ -265,8 +237,6 @@ public class JavaManipulationImpl implements JavaManipulation {
 				}
 				getPrimaryType().createField(content, firstField, false, null);
 			}
-
-			return getField(name);
 		} catch (Exception e) {
 
 			throw new RuntimeException(e);
@@ -279,7 +249,7 @@ public class JavaManipulationImpl implements JavaManipulation {
 	 * @param declaration
 	 */
 	@Override
-	public IField addFieldLast(String content) {
+	public void addFieldLast(String content) {
 		try {
 			VariableDeclarationStatement var = processDeclaration(content);
 			VariableDeclarationFragment frag = getFragment(var);
@@ -288,7 +258,6 @@ public class JavaManipulationImpl implements JavaManipulation {
 			if (!getPrimaryType().getField(name).exists()) {
 				getPrimaryType().createField(content, null, false, null);
 			}
-			return getField(name);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -459,24 +428,6 @@ public class JavaManipulationImpl implements JavaManipulation {
 
 			throw new RuntimeException(e);
 		}
-	}
-
-	@Override
-	public void focusAfter(IMember type) {
-		JavaFocusSupport focus = new JavaFocusSupport(getEditor());
-		focus.focusAfter(type);
-	}
-
-	@Override
-	public void focusBefore(IMember type) {
-		JavaFocusSupport focus = new JavaFocusSupport(getEditor());
-		focus.focusBefore(type);
-	}
-
-	@Override
-	public void focus(IMember type) {
-		JavaFocusSupport focus = new JavaFocusSupport(getEditor());
-		focus.focus(type);
 	}
 
 }
