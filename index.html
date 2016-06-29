@@ -52,12 +52,12 @@
 </code></pre>
 
 <h3>
-<a id="infer-field-names" class="anchor" href="#infer-field-names" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Infer Field Names</h3>
+<a id="nest-templates" class="anchor" href="#nest-templates" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Nest Templates</h3>
 
-<p>This template is just for the field type and then automatically infers the variable name. Just enter the type name and the variable name will get automatically generated. template calls can be nested.</p>
+<p>This template is just for the field type and then automatically infers the variable name (similar to eclipse proposals). Just enter the type name and the variable name will get automatically generated. template calls can be nested.</p>
 
 <pre><code>    java.template("\${Type} \${cursor}", {
-        java.template(Type.toLowerCase() + "= new " + Type + "();");
+        java.template(Type.toLowerCase() + "= new " + Type + "(\${arg1});");
     })
 </code></pre>
 
@@ -143,7 +143,7 @@
      * @param closure the closure to run after the template is finished
      */
     void template(String template, Closure closure);
-
+    void template(String template);
   }
 </code></pre>
 
