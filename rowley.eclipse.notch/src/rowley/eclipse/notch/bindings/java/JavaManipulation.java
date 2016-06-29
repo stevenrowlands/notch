@@ -15,7 +15,7 @@ public interface JavaManipulation {
 	 * @param import the fully qualified class name to add as an import
 	 * @return the eclipse import declaration that was created
 	 */
-	public IImportDeclaration addImport(String contents);
+	public void addImport(String contents);
 	
 	/**
 	 * Adds a constructor to a java class. The constructor is automatically added
@@ -24,7 +24,7 @@ public interface JavaManipulation {
 	 * @param constructor the full java code that defines the constructor
 	 * @return the eclipse method that was created
 	 */
-	public IMethod addConstructor(String contents);
+	public void addConstructor(String contents);
 	
 	
 	/**
@@ -34,7 +34,7 @@ public interface JavaManipulation {
 	 * @param constructor the full java code that defines the method
 	 * @return the eclipse method that was created
 	 */
-	public IMethod addMethod(String contents);
+	public void addMethod(String contents);
 	
 
 	/**
@@ -44,7 +44,7 @@ public interface JavaManipulation {
 	 * @param constructor the full java code that defines the method
 	 * @return the eclipse method that was created
 	 */
-	public IField addFieldFirst(String contents);
+	public void addFieldFirst(String contents);
 	
 	
 	
@@ -55,7 +55,7 @@ public interface JavaManipulation {
 	 * @param constructor the full java code that defines the method
 	 * @return the eclipse method that was created
 	 */
-	public IField addFieldLast(String contents);
+	public void addFieldLast(String contents);
 	
 	/**
 	 * Creates a template and runs the closure at completion.
@@ -65,24 +65,6 @@ public interface JavaManipulation {
 	 */
 	public void template(String template, Closure closure);
 
-	
-	/**
-	 * Shifts focus to a given java member
-	 * @param type the member to focus. The entire member will be selected
-	 */
-	public void focus(IMember type);
-	
-	/**
-	 * Shifts focus to before a given java member
-	 * @param type the member to focus before
-	 */
-	public void focusBefore(IMember type);
-	
-	/**
-	 * Shifts focus to after a given java member
-	 * @param type the member to focus after
-	 */
-	public void focusAfter(IMember type);
 	
 	/**
 	 * @return the java project for the current editor
