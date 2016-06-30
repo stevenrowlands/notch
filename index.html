@@ -132,9 +132,28 @@
 <h2>
 <a id="api" class="anchor" href="#api" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>API</h2>
 
-<p>The 'java' binding is provided for easier java manipulation. If you need something not supported feel free to add or request it. You can also access the current eclipse editor</p>
+<h3>
+<a id="text-binding" class="anchor" href="#text-binding" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Text Binding</h3>
 
-<p>directly via the 'editor' binding to do whatever you want (which is what JavaManipulation uses anyway)</p>
+<pre><code>    /**
+     * Adds text and then positions the cursor at the end of the text
+     * 
+     * @param text to insert
+     */
+    void addText(String text);
+
+    /**
+     * @return the text preceding the current cursor position
+     */
+    String getPrecedingLineText();
+
+    /**
+     * Removes and returns the preceding line of text. Cursor will be positioned at the indentation of the line
+     * 
+     * @return the preceding line text that was removed
+     */
+    String removePrecedingLineText();
+</code></pre>
 
 <h3>
 <a id="java-binding" class="anchor" href="#java-binding" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Java Binding</h3>
@@ -204,7 +223,9 @@
 <a id="getting-started" class="anchor" href="#getting-started" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Getting Started</h2>
 
 <p>Install from the update site
-<a href="https://stevenrowlands.github.io/notch/updatesite">Update Site</a></p>
+<a href="https://stevenrowlands.github.io/notch/neon">Neon</a></p>
+
+<p><a href="https://stevenrowlands.github.io/notch/mars">Mars</a></p>
 
 <p>Clone the sample repository
 <a href="https://github.com/stevenrowlands/notch-scripts">Samples</a></p>
