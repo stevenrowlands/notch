@@ -62,14 +62,67 @@
 </code></pre>
 
 <h2>
-<a id="eclipse-extensions-via-groovy" class="anchor" href="#eclipse-extensions-via-groovy" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Eclipse Extensions via Groovy</h2>
+<a id="auto-expansion" class="anchor" href="#auto-expansion" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Auto Expansion</h2>
+
+<p>Auto expand previous text </p>
+
+<p>Consider this junit example. User has entered</p>
+
+<pre><code>    String a;
+    String b;
+</code></pre>
+
+<p>They add</p>
+
+<pre><code>    String a;
+    String b;
+    a &gt; b
+</code></pre>
+
+<p>Then do CTRL+ENTER (or other hotkey) at the end of the line. The code gets automatically expanded to (with imports)</p>
+
+<pre><code>    String a;
+    String b;
+    assertThat(a, greaterThan(b));
+</code></pre>
+
+<p>All with the following script (shortened to just &gt; and = for brevity)</p>
+
+<pre><code>    def line = text.getPrecedingLineText();
+
+    String [] macros = line.split(" ");
+    if (macros.length == 3) {
+        String operator;
+        java.addStaticImport("org.junit.Assert.assertThat");
+        text.removePrecedingLineText();
+        if (macros[1] == "=") {
+            java.addStaticImport("org.hamcrest.CoreMatchers.equalTo");
+            java.template("assertThat(" + macros[0] + ",equalTo(" + macros[2] + "));");
+        } else if (macros[1] == "&gt;") {
+            java.addStaticImport("org.hamcrest.Matchers.greaterThan");
+            java.template("assertThat(" + macros[0] + ",greaterThan(" + macros[2] + "));\${cursor}");
+        }
+    }
+</code></pre>
 
 <h3>
 <a id="test-generation-and-quick-switch" class="anchor" href="#test-generation-and-quick-switch" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Test Generation and Quick Switch</h3>
 
 <p>This example generates a test class automatically for the currently selected java class and opens it. If a test already exists, then it is simply opened. Running the script from the test class will shift focus back to the class under test.</p>
 
-<p>TODO EXAMPLE</p>
+<pre><code>    String packageName = java.packageName;
+    String content =  "package " + packageName + ";"
+    String className = java.name + "Test";
+    if (java.name.contains("Test")) {
+        javaproject.addFile(java.relativeName.replace("test","src").replace("Test.java", ".java"),content);
+        return;
+    }
+
+    content = content + "\n" + "public class " + className + "{\n}";
+    javaproject.addFile(java.relativeName.replace("src","test").replace(".java", "Test.java"),content);
+
+    java.addImport("org.junit.Test");
+</code></pre>
 
 <h2>
 <a id="hotkeys" class="anchor" href="#hotkeys" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Hotkeys</h2>
