@@ -2,7 +2,7 @@
 <feature
       id="rowley.eclipse.notch.feature"
       label="Notch"
-      version="1.0.1">
+      version="1.0.2">
 
    <description url="https://github.com/stevenrowlands/notch">
       Notch allows you to extend Eclipse with groovy scripts
@@ -32,7 +32,7 @@
          id="rowley.eclipse.notch"
          download-size="0"
          install-size="0"
-         version="1.0.1"
+         version="1.0.2"
          unpack="false"/>
 
 </feature>

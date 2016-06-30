@@ -8,7 +8,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 /**
  * A simple binding for manipulation of text
  */
-public class TextManipulationImpl {
+public class TextManipulationImpl implements TextManipulation {
 
 	private ITextEditor editor;
 
@@ -19,11 +19,10 @@ public class TextManipulationImpl {
 		this.document = editor.getDocumentProvider().getDocument(editor.getEditorInput());
 	}
 
-	/**
-	 * Adds text and then positions the cursor at the end of the text
-	 * 
-	 * @param text to insert
+	/* (non-Javadoc)
+	 * @see rowley.eclipse.notch.bindings.text.TextManipulation#addText(java.lang.String)
 	 */
+	@Override
 	public void addText(String text) {
 		try {
 			TextSelection textSelection = (TextSelection) editor.getSelectionProvider().getSelection();
@@ -35,9 +34,10 @@ public class TextManipulationImpl {
 		}
 	}
 	
-	/**
-	 * @return the text preceding the current cursor position
+	/* (non-Javadoc)
+	 * @see rowley.eclipse.notch.bindings.text.TextManipulation#getPrecedingLineText()
 	 */
+	@Override
 	public String getPrecedingLineText() {
 		try {
 			TextSelection textSelection = (TextSelection) editor.getSelectionProvider().getSelection();
@@ -51,10 +51,10 @@ public class TextManipulationImpl {
 				length++;
 			}
 			while (content.startsWith("\t")) {
-				content = content.replace("\t", "");
+				content = content.replaceFirst("\t", "");
 			}
 			while(content.startsWith(" ")) {
-				content = content.replace(" ", "");
+				content = content.replaceFirst(" ", "");
 			}
 			return content;
 		} catch (Exception e) {
@@ -62,11 +62,10 @@ public class TextManipulationImpl {
 		}
 	}
 	
-	/**
-	 * Removes and returns the preceding line of text. Cursor will be positioned at the indentation of the line
-	 * 
-	 * @return the preceding line text that was removed
+	/* (non-Javadoc)
+	 * @see rowley.eclipse.notch.bindings.text.TextManipulation#removePrecedingLineText()
 	 */
+	@Override
 	public String removePrecedingLineText() {
 		try {
 			TextSelection textSelection = (TextSelection) editor.getSelectionProvider().getSelection();
