@@ -52,6 +52,7 @@ public class GroovyCommandHandler implements IHandler {
 
 		binding.setProperty("java", new JavaManipulationImpl());
 		binding.setProperty("javaproject", new JavaProjectManipulation());
+		binding.setProperty("console", console);
 		if (editor instanceof ITextEditor) {
 			binding.setProperty("text", new TextManipulationImpl((ITextEditor) editor));
 		}
