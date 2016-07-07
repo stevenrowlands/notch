@@ -27,37 +27,46 @@ import rowley.eclipse.notch.pref.PreferenceConstants;
  */
 public class NotchConfigurer {
 
-	private static List<IHandlerActivation> handlers = new ArrayList<IHandlerActivation>();
+    private static List<IHandlerActivation> handlers = new ArrayList<IHandlerActivation>();
 
-	public static void reconfigure() {
-		ICommandService commandService = PlatformUI.getWorkbench().getService(ICommandService.class);
-		IHandlerService handlerService = PlatformUI.getWorkbench().getService(IHandlerService.class);
-		MessageConsole message = ConsoleProvider.getConsole();
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		String scriptPathPreference = store.getString(PreferenceConstants.P_PATH);
+    public static List<File> scripts = new ArrayList<File>();
 
-		NotchConfiguration configuration = new NotchConfiguration(scriptPathPreference);
-		Commander commandCreator = new Commander(commandService);
-		commandCreator.undefine();
+    public static Console console;
 
-		EclipseConsole console = new EclipseConsole(message);
+    public static void reconfigure() {
+        ICommandService commandService = PlatformUI.getWorkbench().getService(ICommandService.class);
+        IHandlerService handlerService = PlatformUI.getWorkbench().getService(IHandlerService.class);
+        MessageConsole message = ConsoleProvider.getConsole();
+        IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+        String scriptPathPreference = store.getString(PreferenceConstants.P_PATH);
 
-		console.write("scanning " + configuration.getScripts().getAbsolutePath());
-		File[] files = configuration.getScripts().listFiles();
-		if (files.length == 0) {
-			console.write("no scripts found");
-		}
-		handlerService.deactivateHandlers(handlers);
-		handlers.clear();
-		for (File script : files) {
-			if (!script.getAbsolutePath().toLowerCase().endsWith(".groovy"))
-				continue;
+        NotchConfiguration configuration = new NotchConfiguration(scriptPathPreference);
+        Commander commandCreator = new Commander(commandService);
+        commandCreator.undefine();
 
-			console.write("  " + script.getAbsolutePath());
-			String simpleName = script.getName();
-			Command command = commandCreator.createCommand(simpleName);
-			GroovyCommandHandler handler = new GroovyCommandHandler(configuration, console);
-			handlers.add(handlerService.activateHandler(command.getId(), handler));
-		}
-	}
+        console = new EclipseConsole(message);
+
+        console.write("scanning " + configuration.getScripts().getAbsolutePath());
+        File[] files = configuration.getScripts().listFiles();
+        if (files == null) {
+            files = new File[0];
+        }
+        if (files.length == 0) {
+            console.write("no scripts found");
+        }
+        handlerService.deactivateHandlers(handlers);
+        handlers.clear();
+        for (File script : files) {
+            if (!script.getAbsolutePath().toLowerCase().endsWith(".groovy"))
+                continue;
+
+            console.write("  " + script.getAbsolutePath());
+            String simpleName = script.getName();
+            Command command = commandCreator.createCommand(simpleName);
+            GroovyCommandHandler handler = new GroovyCommandHandler(configuration, console);
+            scripts.add(script);
+            handlers.add(handlerService.activateHandler(command.getId(), handler));
+        }
+    }
+
 }

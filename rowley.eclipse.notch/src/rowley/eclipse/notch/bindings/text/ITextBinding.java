@@ -1,6 +1,6 @@
 package rowley.eclipse.notch.bindings.text;
 
-public interface TextManipulation {
+public interface ITextBinding {
 
     /**
      * Adds text and then positions the cursor at the end of the text
@@ -20,5 +20,9 @@ public interface TextManipulation {
      * @return the preceding line text that was removed
      */
     String removePrecedingLineText();
+    
+    String getPrecedingWord();
+    
+    String removePrecedingWord();
 
 }

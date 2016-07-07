@@ -21,7 +21,7 @@ public class JavaProjectManipulation extends AbstractJavaManipulation {
 	public void addFile(String relativeFilePath, String content) {
 		try {
 			IProject project = getUnit().getJavaProject().getProject();
-			String[] parts = relativeFilePath.split(File.separator);
+			String[] parts = relativeFilePath.split("/");
 			IFolder currentFolder = project.getFolder(parts[0]);
 			if (!currentFolder.exists()) {
 				currentFolder.create(true, true, null);

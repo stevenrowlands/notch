@@ -123,8 +123,7 @@ public class JavaTemplateManipulation implements ILinkedModeListener {
 		int start = context.getStart();
 		int end = context.getEnd();
 		IRegion region = new Region(start, end - start);
-		// editor.getViewer(), " ".charAt(0), 0, start);
-
+		context.setForceEvaluation(true);
 		boolean hasPositions = false;
 		try {
 
@@ -195,7 +194,7 @@ public class JavaTemplateManipulation implements ILinkedModeListener {
 				.getTemplateContextRegistry().getContextType("java-statements");
 		IDocument document = editor.getDocumentProvider().getDocument(editor.getEditorInput());
 		CompilationUnitContext context = contextType.createContext(document, textSelection.getOffset(), 0, unit);
-
+	
 		int start = context.getStart();
 		int end = context.getEnd();
 		IRegion region = new Region(start, end - start);

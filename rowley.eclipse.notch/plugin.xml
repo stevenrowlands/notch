@@ -42,4 +42,11 @@
          </toolbar>
       </menuContribution>
    </extension>
+  <extension point="org.eclipse.jdt.ui.javaCompletionProposalComputer"
+	   id="NotchCompletionProposalComputer"
+	   name="Notch Completion Proposal Computer">
+	   <javaCompletionProposalComputer class="rowley.eclipse.notch.proposal.NotchProposalComputer" categoryId="org.eclipse.ui.texteditor.textual_proposals">
+	   </javaCompletionProposalComputer>
+  </extension>
+ 
 </plugin>
